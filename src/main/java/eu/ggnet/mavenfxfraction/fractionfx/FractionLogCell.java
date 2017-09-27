@@ -60,7 +60,7 @@ public class FractionLogCell extends ListCell<Log> {
             return;
         }
 
-        File file = new File("C:\\Users\\jacob.weinhold\\Desktop\\Java Sammlung\\FractionFXGUI\\FXGUI\\ressources\\logIcon.png");
+        File file = new File("C:\\Users\\jacob.weinhold\\Desktop\\repos\\MavenFXFraction\\src\\main\\resources\\resources\\logIcon.png");
         Image image = new Image(file.toURI().toString());
         logImage.setImage(image);
         
