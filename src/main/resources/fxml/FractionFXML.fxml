@@ -44,7 +44,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem fx:id="editLogMenuButton" mnemonicParsing="false" onAction="#handleEditMenuButton" text="Edit Log" />
+              <MenuItem fx:id="editLogMenuButton" mnemonicParsing="false" onAction="#handleEditLogMenuButton" text="Edit Log" />
                   <MenuItem fx:id="deleteLogMenuItem" mnemonicParsing="false" onAction="#handleDeleteLogAction" text="Delete Log" />
             </items>
           </Menu>

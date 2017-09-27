@@ -8,71 +8,124 @@ package eu.ggnet.mavenfxfraction.fractionfx;
 import eu.ggnet.mavenfxfraction.fraction.Fraction;
 import eu.ggnet.mavenfxfraction.fraction.Log;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 import javafx.concurrent.Task;
+import javafx.scene.control.Alert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
+ * CSVImportTask parses File for Log.class Objects and returns them as a List
  *
  * @author jacob.weinhold
  */
-public class CSVImportTask extends Task {
+public class CSVImportTask extends Task<List<Log>> {
 
+    private final static Logger LOG = LoggerFactory.getLogger(CSVImportTask.class);
+    /**
+     * Format of .csv file: first line and header is return of static method:
+     * Log.toCSVHeader() each line after:
+     * int,int,int,int,int,int,char,date,string
+     *
+     */
     File file;
 
+    /**
+     *
+     * @param file .csv file to read from, containing Log.class Objects
+     */
     public CSVImportTask(File file)
     {
         this.file = file;
     }
 
     @Override
-    protected Object call() throws Exception
+    protected List<Log> call() throws IllegalArgumentException, FileNotFoundException, IOException, ParseException
     {
         List<Log> list = new LinkedList<>();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        try
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String strLine = "";
+        StringTokenizer st = null;
+
+        String testHeader = br.readLine() + "\n";
+        if (!(testHeader.equals(Log.toCSVHeader())))
         {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String strLine = "";
-            StringTokenizer st = null;
-            File cfile = new File("csv.txt");
-            BufferedWriter writer = new BufferedWriter(new FileWriter(cfile));
-            int tokenNumber = 0;
+            LOG.info("IllegalArgumentException: File Header don't match");
+            throw new IllegalArgumentException("FAIL");
+        }
 
-            br.readLine();
+        while ((strLine = br.readLine()) != null)
+        {
 
-            while ((strLine = br.readLine()) != null)
+            st = new StringTokenizer(strLine, ",");
+            while (st.hasMoreTokens())
             {
-                st = new StringTokenizer(strLine, ",");
-                while (st.hasMoreTokens())
+                if (st.countTokens() == 8)
                 {
-
-                    tokenNumber++;
                     list.add(new Log(
                             new Fraction(Integer.valueOf(st.nextToken()), Integer.valueOf(st.nextToken())),
                             new Fraction(Integer.valueOf(st.nextToken()), Integer.valueOf(st.nextToken())),
                             new Fraction(Integer.valueOf(st.nextToken()), Integer.valueOf(st.nextToken())),
-                            st.nextToken().charAt(0), st.nextToken()));
-
-                    writer.write(tokenNumber + "  " + st.nextToken());
-                    writer.newLine();
+                            st.nextToken().charAt(0), simpleDateFormat.parse(st.nextToken()), ""));
                 }
-
-                tokenNumber = 0;
-                writer.flush();
+                if (st.countTokens() == 9)
+                {
+                    list.add(new Log(
+                            new Fraction(Integer.valueOf(st.nextToken()), Integer.valueOf(st.nextToken())),
+                            new Fraction(Integer.valueOf(st.nextToken()), Integer.valueOf(st.nextToken())),
+                            new Fraction(Integer.valueOf(st.nextToken()), Integer.valueOf(st.nextToken())),
+                            st.nextToken().charAt(0), simpleDateFormat.parse(st.nextToken()), st.nextToken()));
+                }
             }
-        } catch (Exception e)
-        {
-            e.getMessage();
+
         }
 
-        return null;
+        return list;
+    }
 
+    /**
+     * Show alert if task fails. Specific alerts for each expected exception.
+     */
+    @Override
+    protected void failed()
+    {
+
+        LOG.info("EXCEPTION : " + this.getException());
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        if (this.getException() instanceof IllegalArgumentException)
+        {
+            alert.setTitle("ERROR: IMPORT OF CSV ERROR");
+            alert.setContentText("FAILED TO IMPORT CSV");
+        } else if (this.getException() instanceof ParseException)
+        {
+            alert.setTitle("ERROR: COULD NOT PARSE CSV");
+            alert.setHeaderText("");
+            alert.setContentText("FAILED TO PARSE CSV");
+        } else if (this.getException() instanceof IOException)
+        {
+            alert.setTitle("INPUT/OUTPUT ERROR");
+            alert.setHeaderText("");
+            alert.setContentText("FAILED TO PROCEED FILE");
+        } else if (this.getException() instanceof FileNotFoundException)
+        {
+            alert.setTitle("FILE ERROR");
+            alert.setHeaderText("");
+            alert.setContentText("File not found!");
+        }
+
+        alert.show();
+        super.failed();
     }
 
 }

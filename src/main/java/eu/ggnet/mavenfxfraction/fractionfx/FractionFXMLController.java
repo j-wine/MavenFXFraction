@@ -13,6 +13,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.*;
+import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -192,14 +193,14 @@ public class FractionFXMLController implements Initializable {
     }
 
     /**
-     * Store last calculation with user input in @commentArea into @logList,
+     * Initialize Log.class object with last calculation and user input in @commentArea, add into @logList,
      * select and display it
-     *
      * @param event click on "Save Log" Button
      */
     @FXML
     private void handleSaveLogButtonAction(ActionEvent event)
     {
+
         try
         {
 
@@ -207,9 +208,10 @@ public class FractionFXMLController implements Initializable {
                     arithmeticData.getOperator(), commentArea.getText());
 
             logList.getItems().add(log);
+            logList.getSelectionModel().clearSelection();
             logList.getSelectionModel().select(log);
             int index = logList.getSelectionModel().selectedIndexProperty().get();
-            
+
             logFixOutput.setText(log.toFixOutput());
             commentArea.setText(log.toCommentString());
             logList.getSelectionModel().select(log);
@@ -266,15 +268,15 @@ public class FractionFXMLController implements Initializable {
         calculate('*');
     }
 
-    
-/**
- * Method is called in EventHandlers fired by clicking on calculator buttons.
- * FractionTask.class and Fraction.class contain arithmetic logic.
- * Start FractionTask, bind ProgressBar on it, and disable the pressed button until finished
- * Set Fraction return of FractionTask into resultZaehler and resultNenner textfields.
- * Rewind everything (if failed).
- * @param operator  '+', '-', '/', '*'
- */   
+    /**
+     * Method is called in EventHandlers fired by clicking on calculator
+     * buttons. FractionTask.class and Fraction.class contain arithmetic logic.
+     * Start FractionTask, bind ProgressBar on it, and disable the pressed
+     * button until finished Set Fraction return of FractionTask into
+     * resultZaehler and resultNenner textfields. Rewind everything (if failed).
+     *
+     * @param operator '+', '-', '/', '*'
+     */
     private void calculate(char operator)
     {
 
@@ -371,10 +373,10 @@ public class FractionFXMLController implements Initializable {
     }
 
     /**
-     *
-     * @param event mouse click on "Cancel" Button parse all possible textfield
+     * Parse all possible textfield
      * representations of Fraction objects, invoke cancel() if possible and
      * override textfields
+     * @param event mouse click on "Cancel" Button parse 
      */
     @FXML
     private void handleCancelButtonAction(ActionEvent event)
@@ -406,7 +408,7 @@ public class FractionFXMLController implements Initializable {
 
     }
 
-   private void clearInputFields()
+    private void clearInputFields()
     {
 
         zaehlerEins.clear();
@@ -424,7 +426,10 @@ public class FractionFXMLController implements Initializable {
         resultZaehler.clear();
         resultNenner.clear();
     }
-
+/**
+ * 
+ * @return Fraction initialized with resultZaehler and resultNenner textfield contents
+ */
     private Fraction getResult()
     {
         try
@@ -440,7 +445,7 @@ public class FractionFXMLController implements Initializable {
     }
 
     /**
-     * overwrite textfields resultZaehler and resultNenner
+     * Overwrite textfields resultZaehler and resultNenner.
      *
      * @param result desired Fraction to display in result textfields
      */
@@ -452,8 +457,8 @@ public class FractionFXMLController implements Initializable {
     }
 
     /**
-     * parse fields @zaehlerEins and @nennerEins to build and return the
-     * represented Fraction instance
+     * Parse fields @zaehlerEins and @nennerEins to initialize and return the
+     * represented Fraction instance.
      *
      * @return Fraction or null if parsing went wrong
      */
@@ -473,8 +478,8 @@ public class FractionFXMLController implements Initializable {
     }
 
     /**
-     * parse fields @zaehlerZwei and @nennerZwei to build and return the
-     * represented Fraction instance
+     * Parse fields @zaehlerZwei and @nennerZwei to initialize and return the
+     * represented Fraction instance.
      *
      * @return two Fraction objects or null if parsing went wrong
      */
@@ -494,8 +499,8 @@ public class FractionFXMLController implements Initializable {
     }
 
     /**
-     * parse fields @zaehlerEins, @nennerEins and @zaehlerZwei,@nennerZwei to
-     * build and return two Fraction instantiations
+     * Parse fields @zaehlerEins, @nennerEins and @zaehlerZwei,@nennerZwei to
+     * initialize and return two Fraction instantiations.
      *
      * @return two Fraction objects or null if parsing went wrong
      */
@@ -520,7 +525,7 @@ public class FractionFXMLController implements Initializable {
     }
 
     /**
-     * overwrites user input textfields representing Fraction Objects
+     * Overwrites user input textfields representing Fraction Objects.
      *
      * @param first Fraction fields overwrite textfields zaehlerEins and
      * nennerEins
@@ -537,7 +542,7 @@ public class FractionFXMLController implements Initializable {
     }
 
     /**
-     * overwrites all textfields representing Fraction objects
+     * Overwrite all textfields representing Fraction objects.
      *
      * @param first Fraction fields overwrite textfields zaehlerEins and
      * nennerEins
@@ -558,34 +563,10 @@ public class FractionFXMLController implements Initializable {
     }
 
     /**
+     * If there is a listView element selected, remove it, else show alert. Only
+     * delete one element at a time.
      *
-     * @param event click on "Edit Log" MenuItem in "Edit" Menu in MenuBar if
-     * there is a logList element selected, overwrite its comment field with
-     * input currently in the commentArea textfield else show alert
-     */
-    @FXML
-    private void handleEditMenuButton(ActionEvent event)
-    {
-        int index = logList.getSelectionModel().getSelectedIndex();
-        if (!(index < 0))
-        {
-            logList.getSelectionModel().getSelectedItem().setComment(commentArea.getText());
-
-        } else
-        {
-            Alert alert = new Alert(AlertType.ERROR, "ERROR: NO LOG SELECTED", ButtonType.OK);
-            alert.setTitle("");
-            alert.setHeaderText("No Log Selected Error");
-            alert.show();
-
-        }
-    }
-
-    /**
-     *
-     * @param event click on "Delete Log" MenuItem in "Edit" Menu in MenuBar if
-     * there is a logList element selected, remove it from list Model else show
-     * alert
+     * @param event click on "Delete Log" MenuItem in "Edit" Menu in MenuBar
      */
     @FXML
     private void handleDeleteLogAction(ActionEvent event)
@@ -608,8 +589,9 @@ public class FractionFXMLController implements Initializable {
     }
 
     /**
-     * write selected elements of @logList into .csv file and prompt user to
-     * save the file
+     * Write selected elements of @logList into .csv file and prompt user to
+     * save the file. See CSVExportTask.class for further information as well as
+     * the format specifications.
      *
      * @param event click on "Save Log as CSV" MenuItem in "File" Menu in
      * MenuBar
@@ -617,7 +599,7 @@ public class FractionFXMLController implements Initializable {
     @FXML
     private void handleExporttoCSVMenuItemAction(ActionEvent event) throws Exception
     {
-        
+
         Writer writer = null;
 
         if (logList.getSelectionModel().getSelectedItem() == null)
@@ -667,6 +649,13 @@ public class FractionFXMLController implements Initializable {
 
     }
 
+    /**
+     * Prompt user to select .csv file containing Log Objects, parse it and if
+     * succesfull add into listView @logList. See CSVImportTask.class for
+     * further information as well as the format specifications.
+     *
+     * @param event click on "import .csv" menuItem in "File" Menu in MenuBar
+     */
     @FXML
     private void handleimportCSVMenuItemAction(ActionEvent event)
     {
@@ -676,6 +665,38 @@ public class FractionFXMLController implements Initializable {
 
         File file = fileChooser.showOpenDialog(anchorPane.getScene().getWindow());
 
+        CSVImportTask task = new CSVImportTask(file);
+
+        pool.execute(task);
+        task.setOnSucceeded((evt) ->
+        {
+            Log.info("Task succeeded");
+            logList.getItems().addAll(task.getValue());
+        });
+
+    }
+
+    /**
+     * @param event click on "Edit Log" MenuItem in "Edit" Menu in MenuBar if
+     * there is a logList element selected, overwrite its comment field with
+     * input currently in the commentArea textfield else show alert
+     */
+    @FXML
+    private void handleEditLogMenuButton(ActionEvent event)
+    {
+        int index = logList.getSelectionModel().getSelectedIndex();
+        if (!(index < 0))
+        {
+            logList.getSelectionModel().getSelectedItem().setComment(commentArea.getText());
+
+        } else
+        {
+            Alert alert = new Alert(AlertType.ERROR, "ERROR: NO LOG SELECTED", ButtonType.OK);
+            alert.setTitle("");
+            alert.setHeaderText("No Log Selected Error");
+            alert.show();
+
+        }
     }
 
 }

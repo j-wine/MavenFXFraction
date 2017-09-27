@@ -14,14 +14,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * CSVExportTask writes Log.class Objects of logList in .csv format (see below for format details)
  * @author jacob.weinhold
  */
 public class CSVExportTask extends Task {
     private final static Logger Log = LoggerFactory.getLogger(CSVExportTask.class);
 
+    /**
+     * Format of .csv file:
+     * first line and header is return of static method: Log.toCSVHeader()
+     * each line after: int,int,int,int,int,int,char,date,string
+     * 
+     */
     List<Log> logList;
     Writer writer;
+    
+    /**
+     * 
+     * @param logList List containing Log.class Objects
+     * @param writer which was instantiated elsewhere with the file to write in
+     * @return null because Task is only used for JavaFX utilities
+     */
 
     public CSVExportTask(List<Log> logList, Writer writer)
     {
@@ -37,7 +50,7 @@ public class CSVExportTask extends Task {
         try
         {
 
-            writer.write(logList.get(0).toCSVHEader());
+            writer.write(logList.get(0).toCSVHeader());
             for (Log log : logList)
             {
                 

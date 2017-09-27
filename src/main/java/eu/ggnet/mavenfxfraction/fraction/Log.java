@@ -13,25 +13,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Log.class Objects contain all information about one arithmetic operation on two Fraction.class objects, the time they
+ * were created and possibly a comment.
+ * Used in listView in @FractionFXMLController.class
  * @author jacob.weinhold
  */
 public final class Log {
 
     private final static Logger LOG = LoggerFactory.getLogger(Log.class);
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    
+
     public Log(Fraction fractionOne, Fraction fractionTwo, Fraction result, char operator, String comment)
     {
-        
+
         this.fractionOne = fractionOne;
         this.fractionTwo = fractionTwo;
         this.result = result;
         this.operator = operator;
-        
+
         this.comment = comment;
         stamp = new Date();
-        
+
     }
 
     public Log(Fraction fractionOne, Fraction fractionTwo, Fraction result, char operator, Date stamp, String comment)
@@ -43,35 +45,28 @@ public final class Log {
         this.stamp = stamp;
         this.comment = comment;
     }
-    
-    
 
     private final Fraction fractionOne;
     private final Fraction fractionTwo;
     private final Fraction result;
     private final char operator;
     private final Date stamp;
-    
+
     private String comment;
-    
-    public String toCSVHEader(){
+
+    public static String toCSVHeader()
+    {
         return "FractionOneNominator,FractionOneDenominator,FractionTwoNominator, FractionTwoDenominator,resultNominator,resultDenominator,operator,stamp,comment\n";
     }
-    public String toCSVString(){
-       
-        
-          return fractionOne.getZaehler() + "," + fractionOne.getNenner()+","+fractionTwo.getZaehler()+","+fractionTwo.getNenner()+
-                "," + result.getZaehler() + "," + result.getNenner() + ","+operator+","+simpleDateFormat.format(stamp)+","+comment;
-        
 
-                
-        
-        
-        
+    public String toCSVString()
+    {
 
+        return fractionOne.getZaehler() + "," + fractionOne.getNenner() + "," + fractionTwo.getZaehler() + "," + fractionTwo.getNenner()
+                + "," + result.getZaehler() + "," + result.getNenner() + "," + operator + "," + simpleDateFormat.format(stamp) + "," + comment;
 
     }
-    
+
     public void setComment(String comment)
     {
         this.comment = comment;
@@ -113,14 +108,10 @@ public final class Log {
         return "Log{" + "fractionOne=" + fractionOne + ", fractionTwo=" + fractionTwo + ", result=" + result + ", operator=" + operator + ", stamp=" + stamp + ", comment=" + comment + '}';
     }
 
-
-
     public String getComment()
     {
         return comment;
     }
-
-  
 
     public String toFixOutput()
     {
@@ -135,7 +126,7 @@ public final class Log {
 
     public String toArithmeticString()
     {
-        return ""+fractionOne + operator + fractionTwo + "\n= result:\n" + result;
+        return "" + fractionOne + operator + fractionTwo + "\n= result:\n" + result;
     }
 
 }

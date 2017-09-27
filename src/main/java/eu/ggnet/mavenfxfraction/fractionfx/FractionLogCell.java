@@ -39,7 +39,7 @@ public class FractionLogCell extends ListCell<Log> {
 
     public FractionLogCell()
     {
-        mLLoader = new FXMLLoader(getClass().getResource("FractionLogCell.fxml"));
+        mLLoader = new FXMLLoader(getClass().getResource("/fxml/FractionLogCell.fxml"));
         mLLoader.setController(this);
         try
         {

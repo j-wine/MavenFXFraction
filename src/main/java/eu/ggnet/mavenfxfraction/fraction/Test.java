@@ -36,8 +36,10 @@ public class Test {
             String strLine = "";
             StringTokenizer st = null;
 
-            br.readLine();
-
+            String testHeader = br.readLine();
+            if(!(testHeader==Log.toCSVHeader()))
+                return;
+            
             while ((strLine = br.readLine()) != null)
             {
 
