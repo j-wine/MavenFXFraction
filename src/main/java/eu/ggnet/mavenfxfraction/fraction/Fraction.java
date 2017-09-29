@@ -33,10 +33,7 @@ public class Fraction implements Comparable<Fraction> {
     {
         //catch "division" by zero
         if (denominator < 0)
-        {
-            numerator *= -1;
-            denominator *= -1;
-        }
+           denominator = 1;
         zaehler = numerator;
         nenner = denominator;
 

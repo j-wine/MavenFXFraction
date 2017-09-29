@@ -92,8 +92,9 @@ public class FractionFXMLController implements Initializable {
     private MenuItem importCSVMenuItem;
 
     /**
-     * Initializes the controller class. initialize and set ProgressBar for
-     * calculation task and ChangeListener for Fraction textfield inputs
+     * Initializes the controller class. Initialize and locate ProgressBar on
+     * result reperesenting textfields and set ChangeListeners for Fraction
+     * textfield inputs
      */
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -133,7 +134,7 @@ public class FractionFXMLController implements Initializable {
                     {
                         if (Long.valueOf(newValue) > Integer.MAX_VALUE || Long.valueOf(newValue) < Integer.MIN_VALUE)
                         {
-                            throw new NumberFormatException();
+                            throw new IllegalArgumentException();
                         }
 
                         if ((textField == nennerEins || textField == nennerZwei) && Integer.valueOf(newValue) == 0)
@@ -149,9 +150,9 @@ public class FractionFXMLController implements Initializable {
                             );
                         }
 
-                    } catch (NumberFormatException e)
+                    } catch (IllegalArgumentException e)
                     {
-                        Alert alert = new Alert(AlertType.ERROR, "ERROR: NOT A INTEGER INPUT", ButtonType.OK);
+                        Alert alert = new Alert(AlertType.ERROR, "ERROR: NOT AN INTEGER", ButtonType.OK);
                         alert.setTitle("Fraction Input Error");
                         alert.setHeaderText("User Input Error");
                         alert.showAndWait().filter(response -> response == ButtonType.OK).ifPresent(response ->
@@ -193,8 +194,9 @@ public class FractionFXMLController implements Initializable {
     }
 
     /**
-     * Initialize Log.class object with last calculation and user input in @commentArea, add into @logList,
-     * select and display it
+     * Initialize Log.class object with last calculation and user input in
+     * @commentArea, add into @logList, select and display it
+     *
      * @param event click on "Save Log" Button
      */
     @FXML
@@ -279,8 +281,14 @@ public class FractionFXMLController implements Initializable {
      */
     private void calculate(char operator)
     {
-
-        FractionCalculationTask task = new FractionCalculationTask(getFractions(), operator);
+        FractionCalculationTask task;
+        try
+        {
+            task = new FractionCalculationTask(getFractions(), operator);
+        } catch (IllegalArgumentException e)
+        {
+            return;
+        }
 
         task.setOnRunning((evt) ->
         {
@@ -310,7 +318,7 @@ public class FractionFXMLController implements Initializable {
         });
         task.setOnSucceeded((evt) ->
         {
-            
+
             resultZaehler.setVisible(true);
             resultNenner.setVisible(true);
             progressBar.progressProperty().unbind();
@@ -373,10 +381,10 @@ public class FractionFXMLController implements Initializable {
     }
 
     /**
-     * Parse all possible textfield
-     * representations of Fraction objects, invoke cancel() if possible and
-     * override textfields
-     * @param event mouse click on "Cancel" Button parse 
+     * Parse all possible textfield representations of Fraction objects, invoke
+     * cancel() if possible and override textfields
+     *
+     * @param event mouse click on "Cancel" Button parse
      */
     @FXML
     private void handleCancelButtonAction(ActionEvent event)
@@ -426,10 +434,12 @@ public class FractionFXMLController implements Initializable {
         resultZaehler.clear();
         resultNenner.clear();
     }
-/**
- * 
- * @return Fraction initialized with resultZaehler and resultNenner textfield contents
- */
+
+    /**
+     *
+     * @return Fraction initialized with resultZaehler and resultNenner
+     * textfield contents
+     */
     private Fraction getResult()
     {
         try

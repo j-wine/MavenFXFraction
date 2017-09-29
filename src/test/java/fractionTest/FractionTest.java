@@ -76,8 +76,6 @@ public class FractionTest {
         LOG.info("Method took: " + timer.stop());
     }
 
-
-
     @Test
     public void testComparable()
     {
@@ -107,6 +105,33 @@ public class FractionTest {
         }
 
     }
+
+    @Test
+    public void testFractionCalculationTask()
+    {
+
+        Fraction bruchEins = new Fraction(((int) Math.random()) * 317, ((int) Math.random()) * 713);
+        Fraction bruchZwei = new Fraction(((int) Math.random()) * 971, ((int) Math.random()) * 929);
+        List<Fraction> rechenBrüche = new LinkedList();
+        Fraction addResult = bruchEins.add(bruchZwei);
+        Fraction subResult = bruchEins.add(bruchZwei);;
+        Fraction divideResult = bruchEins.add(bruchZwei);;
+        Fraction multResult = bruchEins.add(bruchZwei);;
+        
+        
+
+    }
+    
+    @Test
+    public void testIntegerOverflow(){
+        
+        Fraction bruch = new Fraction((int) Long.MAX_VALUE, (int) Long.MAX_VALUE);
+        System.out.println(bruch);
+        Fraction bruchZwei = new Fraction(1,2);
+        Fraction result = bruch.add(bruchZwei);
+        System.out.println(result);
+    }
+
 }
 
 class CancelCallable implements Callable {
@@ -128,7 +153,3 @@ class CancelCallable implements Callable {
     }
 
 }
-
-
-
-
