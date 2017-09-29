@@ -20,7 +20,7 @@
         <URL value="@fractionfxml.css" />
     </stylesheets>
    <children>
-      <VBox layoutX="14.0" layoutY="44.0" AnchorPane.bottomAnchor="289.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="468.0" AnchorPane.topAnchor="44.0">
+      <VBox layoutX="14.0" layoutY="44.0">
          <children>
             <Label fx:id="bruch1Label" text="Bruch 1:" />
             <TextField fx:id="zaehlerEins" promptText="Zaehler" />
@@ -50,7 +50,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <TextArea fx:id="commentArea" layoutX="247.0" layoutY="125.0" prefHeight="81.0" prefWidth="233.0" promptText="Comment Field" AnchorPane.leftAnchor="247.0" AnchorPane.topAnchor="125.0" />
+      <TextArea fx:id="commentArea" layoutX="247.0" layoutY="125.0" prefHeight="81.0" prefWidth="233.0" promptText="Comment Field" />
       <ListView fx:id="logList" layoutX="486.0" onMouseClicked="#handleLogListClickAction" prefHeight="336.0" prefWidth="145.0" AnchorPane.topAnchor="0.0" />
       <Button fx:id="useLogButton" layoutX="486.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleUseLogButtonAction" prefHeight="32.0" prefWidth="145.0" text="Use Log" />
       <GridPane layoutX="14.0" layoutY="220.0">

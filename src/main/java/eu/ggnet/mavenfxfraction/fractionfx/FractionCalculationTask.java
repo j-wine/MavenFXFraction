@@ -6,11 +6,9 @@
 package eu.ggnet.mavenfxfraction.fractionfx;
 
 import eu.ggnet.mavenfxfraction.fraction.Fraction;
-import eu.ggnet.mavenfxfraction.fraction.Fraction;
 
 import java.util.List;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +18,9 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class FractionCalculationTask extends Task<Fraction> {
+
+
+    
 
     private final static Logger Log = LoggerFactory.getLogger(FractionCalculationTask.class);
 

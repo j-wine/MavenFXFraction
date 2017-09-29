@@ -310,7 +310,7 @@ public class FractionFXMLController implements Initializable {
         });
         task.setOnSucceeded((evt) ->
         {
-
+            
             resultZaehler.setVisible(true);
             resultNenner.setVisible(true);
             progressBar.progressProperty().unbind();
