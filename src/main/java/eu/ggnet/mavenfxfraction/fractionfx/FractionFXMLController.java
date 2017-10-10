@@ -275,7 +275,7 @@ public class FractionFXMLController implements Initializable {
      * Method is called in EventHandlers fired by clicking on calculator
      * buttons. FractionTask and Fraction contain arithmetic logic.
      * Start FractionTask, bind ProgressBar on it, and disable the pressed
-     * button until finished Set Fraction return of FractionTask into
+     * button until finished. Set Fraction return of FractionTask into
      * resultZaehler and resultNenner textfields. Rewind everything (if failed).
      *
      * @param operator '+', '-', '/', '*'
