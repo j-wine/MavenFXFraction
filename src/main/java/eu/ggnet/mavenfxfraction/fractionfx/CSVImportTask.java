@@ -19,11 +19,12 @@ import java.util.List;
 import java.util.StringTokenizer;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * CSVImportTask parses File for Log.class Objects and returns them as a List
+ * CSVImportTask parses File for Log Objects and returns them as a List
  *
  * @author jacob.weinhold
  */
@@ -126,6 +127,22 @@ public class CSVImportTask extends Task<List<Log>> {
 
         alert.show();
         super.failed();
+    }
+
+    @Override
+    protected void succeeded()
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, ".csv Import succesfull!", ButtonType.OK);
+        alert.setTitle("Succesfull CSV Import");
+        alert.setContentText("");
+        alert.setHeaderText("Import of .csv file succesfull!");
+        alert.show();
+        alert.setTitle("Succesfull CSV Import");
+        alert.setContentText("");
+        alert.setHeaderText("Import of .csv file succesfull!");
+        alert.show();
+
+        super.succeeded();
     }
 
 }

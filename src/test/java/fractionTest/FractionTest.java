@@ -9,7 +9,7 @@ import com.google.common.base.Stopwatch;
 import static org.assertj.core.api.Assertions.*;
 import eu.ggnet.mavenfxfraction.fraction.Fraction;
 import eu.ggnet.mavenfxfraction.fractionfx.FractionCalculationTask;
-import eu.ggnet.mavenfxfraction.fractionfx.FractionCallable;
+import java.util.Arrays;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -22,8 +22,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
-import javafx.concurrent.Task;
+import javafx.embed.swing.JFXPanel;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -37,7 +36,7 @@ public class FractionTest {
 
     private final static Logger LOG = LoggerFactory.getLogger(FractionTest.class);
 
-    final int TESTSIZE = 1000;
+    final int TESTSIZE = 10;
 
     @Test
     public void testConcurrence() throws InterruptedException
@@ -107,30 +106,41 @@ public class FractionTest {
     }
 
     @Test
-    public void testFractionCalculationTask()
+    public void testFractionCalculationTask() throws InterruptedException, ExecutionException
     {
+
+        // initializes JavaFX environment because Task
+        new JFXPanel();
 
         Fraction bruchEins = new Fraction(((int) Math.random()) * 317, ((int) Math.random()) * 713);
         Fraction bruchZwei = new Fraction(((int) Math.random()) * 971, ((int) Math.random()) * 929);
-        List<Fraction> rechenBrüche = new LinkedList();
-        Fraction addResult = bruchEins.add(bruchZwei);
-        Fraction subResult = bruchEins.add(bruchZwei);;
-        Fraction divideResult = bruchEins.add(bruchZwei);;
-        Fraction multResult = bruchEins.add(bruchZwei);;
-        
-        
+        List<Fraction> fractionList = new LinkedList();
+        fractionList.addAll(Arrays.asList(bruchEins, bruchZwei));
+
+        ExecutorService pool = Executors.newWorkStealingPool();
+
+        Fraction sum = bruchEins.add(bruchZwei);
+        Fraction difference = bruchEins.substract(bruchZwei);;
+        Fraction quotient = bruchEins.multiply(bruchZwei);;
+        Fraction product = bruchEins.divide(bruchZwei);;
+
+        FractionCalculationTask addTask = new FractionCalculationTask(fractionList, '+');
+        FractionCalculationTask subTask = new FractionCalculationTask(fractionList, '-');
+        FractionCalculationTask multiplyTask = new FractionCalculationTask(fractionList, '*');
+        FractionCalculationTask divideTask = new FractionCalculationTask(fractionList, '/');
+
+        pool.execute(addTask);
+        pool.execute(subTask);
+        pool.execute(multiplyTask);
+        pool.execute(divideTask);
+
+        assertThat(addTask.get()).isEqualTo(sum);
+        assertThat(subTask.get()).isEqualTo(difference);
+        assertThat(multiplyTask.get()).isEqualTo(product);
+        assertThat(divideTask.get()).isEqualTo(quotient);
 
     }
-    
-    @Test
-    public void testIntegerOverflow(){
-        
-        Fraction bruch = new Fraction((int) Long.MAX_VALUE, (int) Long.MAX_VALUE);
-        System.out.println(bruch);
-        Fraction bruchZwei = new Fraction(1,2);
-        Fraction result = bruch.add(bruchZwei);
-        System.out.println(result);
-    }
+
 
 }
 
@@ -147,7 +157,7 @@ class CancelCallable implements Callable {
     public Object call() throws Exception
     {
         Random random = new Random();
-        Thread.sleep(random.nextInt(500));
+        
         bruch = bruch.cancel();
         return bruch;
     }

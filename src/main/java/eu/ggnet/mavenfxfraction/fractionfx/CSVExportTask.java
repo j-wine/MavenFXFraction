@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * CSVExportTask writes Log.class Objects of logList in .csv format (see below for format details)
+ * CSVExportTask writes Log Objects of logList in .csv format (see below for format details)
  * @author jacob.weinhold
  */
 public class CSVExportTask extends Task {
@@ -31,9 +31,8 @@ public class CSVExportTask extends Task {
     
     /**
      * 
-     * @param logList List containing Log.class Objects
+     * @param logList List containing Log Objects
      * @param writer which was instantiated elsewhere with the file to write in
-     * @return null because Task is only used for JavaFX utilities
      */
 
     public CSVExportTask(List<Log> logList, Writer writer)
@@ -46,7 +45,7 @@ public class CSVExportTask extends Task {
     protected Object call() throws Exception
     {
 
-        Thread.sleep(1000);
+        
         try
         {
 

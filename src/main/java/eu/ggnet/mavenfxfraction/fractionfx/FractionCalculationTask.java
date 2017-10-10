@@ -19,9 +19,6 @@ import org.slf4j.LoggerFactory;
  */
 public class FractionCalculationTask extends Task<Fraction> {
 
-
-    
-
     private final static Logger Log = LoggerFactory.getLogger(FractionCalculationTask.class);
 
     List<Fraction> list;
@@ -59,7 +56,8 @@ public class FractionCalculationTask extends Task<Fraction> {
     }
 
     /**
-     * invokes methods add(), subtract(), multiply() and divide() from @Fraction.class for desired arithemtic operation
+     * invokes methods add(), subtract(), multiply() and divide() from
+     * Fraction for desired arithemtic operation
      *
      * @return result or null if failed
      * @throws java.lang.InterruptedException if sleep is interrupted

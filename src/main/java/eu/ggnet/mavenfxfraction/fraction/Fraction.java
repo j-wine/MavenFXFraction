@@ -14,10 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Fraction implements abstract fraction datatype with basic arithmetic
+ * functionality
  *
  * @author jacob.weinhold
- * @Fraction.class implements abstract fraction datatype with basic arithmetic
- * functionality
  */
 public class Fraction implements Comparable<Fraction> {
 
@@ -33,7 +33,9 @@ public class Fraction implements Comparable<Fraction> {
     {
         //catch "division" by zero
         if (denominator < 0)
-           denominator = 1;
+        {
+            denominator = 1;
+        }
         zaehler = numerator;
         nenner = denominator;
 
@@ -64,7 +66,7 @@ public class Fraction implements Comparable<Fraction> {
     }
 
     @Override
-    public boolean equals(Object obj)
+    public final boolean equals(Object obj)
     {
         if (this == obj)
         {
@@ -74,7 +76,7 @@ public class Fraction implements Comparable<Fraction> {
         {
             return false;
         }
-        if (!obj.getClass().equals(getClass()))
+        if (!(obj instanceof Fraction))
         {
             return false;
         }
@@ -166,14 +168,12 @@ public class Fraction implements Comparable<Fraction> {
     }
 
     @Override
-    public int hashCode()
+    public final int hashCode()
     {
         int hash = 3;
         hash = 29 * hash + this.zaehler;
         hash = 29 * hash + this.nenner;
         return hash;
     }
-    
-
 
 }
