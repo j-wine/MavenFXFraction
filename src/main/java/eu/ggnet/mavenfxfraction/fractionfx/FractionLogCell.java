@@ -8,11 +8,8 @@ package eu.ggnet.mavenfxfraction.fractionfx;
 import eu.ggnet.mavenfxfraction.fraction.Log;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
@@ -21,8 +18,8 @@ import javafx.scene.layout.AnchorPane;
 
 /**
  *
- * @author jacob.weinhold
- * Custom ListCell displaying an image and the id(+1) of list element
+ * @author jacob.weinhold Custom ListCell displaying an image and the id(+1) of
+ * list element
  */
 public class FractionLogCell extends ListCell<Log> {
 
@@ -48,6 +45,10 @@ public class FractionLogCell extends ListCell<Log> {
         {
             e.printStackTrace();
         }
+
+        File file = new File("C:\\Users\\jacob.weinhold\\Desktop\\repos\\MavenFXFraction\\src\\main\\resources\\resources\\logIcon.png");
+        Image image = new Image(file.toURI().toString());
+        logImage.setImage(image);
     }
 
     @Override
@@ -60,11 +61,7 @@ public class FractionLogCell extends ListCell<Log> {
             return;
         }
 
-        File file = new File("C:\\Users\\jacob.weinhold\\Desktop\\repos\\MavenFXFraction\\src\\main\\resources\\resources\\logIcon.png");
-        Image image = new Image(file.toURI().toString());
-        logImage.setImage(image);
-        
-        logLabel.setText("Log Nr: " + (getIndex() +1));
+        logLabel.setText("Log Nr: " + (getIndex() + 1));
         setGraphic(anchorPane);
 
     }

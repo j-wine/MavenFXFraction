@@ -5,9 +5,7 @@
  */
 package eu.ggnet.mavenfxfraction.fraction;
 
-import eu.ggnet.mavenfxfraction.fractionfx.FractionFXMLController;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

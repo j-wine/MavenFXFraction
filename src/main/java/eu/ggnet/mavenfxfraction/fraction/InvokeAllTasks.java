@@ -14,7 +14,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
@@ -25,37 +24,54 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+class TaskWrapper implements Function<Task<Integer>, Callable<Integer>> {
+
+    @Override
+    public Callable<Integer> apply(Task<Integer> task)
+    {
+        return new Callable() {
+            @Override
+            public Object call() throws Exception
+            {
+                task.run();
+                return task.getValue();
+            }
+
+        };
+    }
+
+}
+
 public class InvokeAllTasks extends Application {
 
     private Random rng = new Random();
     private ExecutorService exec = Executors.newFixedThreadPool(5);
-    private Function<Task<Integer>, Callable<Integer>> taskWrapper = task -> () -> {
+    private Function<Task<Integer>, Callable<Integer>> taskWrapper = task -> () ->
+    {
         task.run();
         return task.getValue();
     };
-    
-
-    
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage)
+    {
         Button runAll = new Button("Run all tasks");
         Label status = new Label();
 
-        runAll.setOnAction(e -> {
+        runAll.setOnAction(e ->
+        {
             List<Task<Integer>> tasks = createTasks();
-
 
             Task<List<Future<Integer>>> runAllTask = new Task<List<Future<Integer>>>() {
                 @Override
-                protected List<Future<Integer>> call() throws Exception {
+                protected List<Future<Integer>> call() throws Exception
+                {
                     return exec.invokeAll(tasks.stream().map(taskWrapper).collect(Collectors.toList()));
                 }
             };
             status.setText("Running...");
             runAllTask.setOnSucceeded(evt -> status.setText("All Done"));
             new Thread(runAllTask).start();
-
 
         });
 
@@ -70,21 +86,25 @@ public class InvokeAllTasks extends Application {
     }
 
     @Override
-    public void stop() {
+    public void stop()
+    {
         exec.shutdown();
     }
 
-    private List<Task<Integer>> createTasks() {
+    private List<Task<Integer>> createTasks()
+    {
         List<Task<Integer>> tasks = new ArrayList<>();
-        for (int i = 1 ; i <= 8 ; i++) {
-            String name = "Task "+i;
+        for (int i = 1; i <= 8; i++)
+        {
+            String name = "Task " + i;
             Task<Integer> t = new Task<Integer>() {
                 @Override
-                protected Integer call() throws Exception {
-                    System.out.println(name+" running");
-                    Thread.sleep(rng.nextInt(1000)+500);
+                protected Integer call() throws Exception
+                {
+                    System.out.println(name + " running");
+                    Thread.sleep(rng.nextInt(1000) + 5000);
                     int result = rng.nextInt(500);
-                    System.out.println(name+" computed "+result);
+                    System.out.println(name + " computed " + result);
                     return result;
                 }
             };
@@ -93,7 +113,8 @@ public class InvokeAllTasks extends Application {
         return tasks;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         launch(args);
     }
 }

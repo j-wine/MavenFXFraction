@@ -99,7 +99,6 @@ public class FractionFXMLController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        
 
         //set custom listViewCell
         logList.setCellFactory(customCell -> new FractionLogCell());
@@ -196,6 +195,7 @@ public class FractionFXMLController implements Initializable {
 
     /**
      * Initialize Log object with last calculation and user input in
+     *
      * @commentArea, add into @logList, select and display it
      *
      * @param event click on "Save Log" Button
@@ -273,10 +273,10 @@ public class FractionFXMLController implements Initializable {
 
     /**
      * Method is called in EventHandlers fired by clicking on calculator
-     * buttons. FractionTask and Fraction contain arithmetic logic.
-     * Start FractionTask, bind ProgressBar on it, and disable the pressed
-     * button until finished. Set Fraction return of FractionTask into
-     * resultZaehler and resultNenner textfields. Rewind everything (if failed).
+     * buttons. FractionTask and Fraction contain arithmetic logic. Start
+     * FractionTask, bind ProgressBar on it, and disable the pressed button
+     * until finished. Set Fraction return of FractionTask into resultZaehler
+     * and resultNenner textfields. Rewind everything (if failed).
      *
      * @param operator '+', '-', '/', '*'
      */
@@ -601,8 +601,8 @@ public class FractionFXMLController implements Initializable {
 
     /**
      * Write selected elements of @logList into .csv file and prompt user to
-     * save the file. See CSVExportTask for further information as well as
-     * the format specifications.
+     * save the file. See CSVExportTask for further information as well as the
+     * format specifications.
      *
      * @param event click on "Save Log as CSV" MenuItem in "File" Menu in
      * MenuBar
@@ -662,8 +662,8 @@ public class FractionFXMLController implements Initializable {
 
     /**
      * Prompt user to select .csv file containing Log Objects, parse it and if
-     * succesfull add into listView @logList. See CSVImportTask for
-     * further information as well as the format specifications.
+     * succesfull add into listView @logList. See CSVImportTask for further
+     * information as well as the format specifications.
      *
      * @param event click on "import .csv" menuItem in "File" Menu in MenuBar
      */
